@@ -14,7 +14,7 @@ class Ship():
         # load ship image and get its rect and mask
         self.ori_image = pygame.image.load('images/ship.png')
         self.image = self.ori_image
-        self.rect  = self.image.get_rect()
+        self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         #self.mask = pygame.mask.from_surface(self.image)
 

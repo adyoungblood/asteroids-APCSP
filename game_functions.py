@@ -42,12 +42,12 @@ def check_keydown_events(event, as_settings, screen, ship, bullets):
     if event.key == pygame.K_d:
         #Enable the ship's movement flag
         ship.turning_right = True
-    elif event.key == pygame.K_a:
+    if event.key == pygame.K_a:
         ship.turning_left = True
-    #elif event.key == pygame.K_SPACE:
+    if event.key == pygame.K_SPACE:
         #Create a new bullet and add it to the bullets group if there aren't too many bullets
-        #fire_bullet(as_settings, screen, ship, bullets)
-    elif event.key == pygame.K_q:
+        fire_bullet(as_settings, screen, ship, bullets)
+    if event.key == pygame.K_q:
         pygame.quit()
         sys.exit()
 
@@ -96,13 +96,21 @@ def update_bullets(as_settings, screen, ship, asteroids, bullets):
     bullets.update()
 
     #Get rid of old bullets
-    for bullet in bullets.copy():
-            if bullet.rect.bottom  <= 0:
-                bullets.remove(bullet)
-    check_bullet_alien_collisions(as_settings, screen, ship, asteroids, bullets)
+    for bullet in bullets:#.copy():
+        if bullet.time_remaining <= 0:
+            bullets.remove(bullet)
+        if bullet.rect.x < 0:
+            bullet.x = as_settings.screen_width
+        if bullet.rect.x > as_settings.screen_width:
+            bullet.x = 0
+        if bullet.rect.y < 0:
+            bullet.y = as_settings.screen_height
+        if bullet.rect.y > as_settings.screen_height:
+            bullet.y = 0
+    #check_bullet_asteroid_collisions(as_settings, screen, ship, asteroids, bullets)
 
 
-def check_bullet_alien_collisions(as_settings, screen, ship, asteroids, bullets):
+def check_bullet_asteroid_collisions(as_settings, screen, ship, asteroids, bullets):
     """Respond to bullet-alien collisions"""
     #Remove any bullets and asteroids that have collided
     if as_settings.super_bullets:
@@ -116,11 +124,10 @@ def check_bullet_alien_collisions(as_settings, screen, ship, asteroids, bullets)
         create_fleet(as_settings, screen, ship, asteroids)
 
 def fire_bullet(as_settings, screen, ship, bullets):
-    """Fire a bullet if there aren't too many"""
+    """Fire a bullet"""
     #Create a new bullet and add it to the bullets group
-    if len(bullets) < as_settings.allowed_bullets:
-            new_bullet = Bullet(as_settings, screen, ship)
-            bullets.add(new_bullet)
+    new_bullet = Bullet(as_settings, screen, ship)
+    bullets.add(new_bullet)
 
 def get_number_asteroids_x(as_settings, alien_width):
     """Determine the number of asteroids that fit in a row"""

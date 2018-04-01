@@ -46,7 +46,7 @@ def run_game():
         
         if stats.game_active:
             ship.update()
-            #gf.update_bullets(as_settings, screen, ship, asteroids, bullets)
+            gf.update_bullets(as_settings, screen, ship, asteroids, bullets)
             #gf.update_asteroids(as_settings, stats, screen, asteroids, ship, bullets)
         else:
             print("Game Over!!!")

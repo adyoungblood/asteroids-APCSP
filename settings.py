@@ -1,11 +1,16 @@
+import ctypes
+
 class Settings():
     """A class for all necessary settings to run the game"""
 
     def __init__(self):
         """Initialize settings"""
+
+        user32 = ctypes.windll.user32
+        
         #Screen settings
-        self.screen_width = 1800
-        self.screen_height = 975
+        self.screen_width = user32.GetSystemMetrics(0)
+        self.screen_height = user32.GetSystemMetrics(1) - 75
         self.bg_color = (230, 230, 230)
 
         #Ship settings
@@ -15,12 +20,12 @@ class Settings():
         self.friction_factor = 0.5
 
         #Bullet settings
-        self.bullet_speed_factor = 1
-        self.bullet_width = 3
-        self.bullet_height = 15
+        self.bullet_speed_factor = 10
+        self.bullet_width = 7
+        self.bullet_height = 7
         self.bullet_color = 60, 60, 60
-        self.allowed_bullets = 3
-        self.super_bullets = False
+        self.bullet_dist = 25
+        self.bullet_time = 120
 
         #Alien settings
         self.alien_speed_factor = 1
