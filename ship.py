@@ -21,7 +21,9 @@ class Ship():
         # Start each new ship at the center of the screen
         self.rect.center = self.screen_rect.center
 
-        self.center  = [self.rect.centerx, self.rect.centery]
+        self.center = [self.rect.centerx, self.rect.centery]
+
+        self.invincible_time = 0
 
         #Movement flags
         self.turning_right = False
@@ -35,14 +37,9 @@ class Ship():
     def update(self):
         """Update the ship's position based on vectors"""
         #Update the ship's center value, not the rect
-        '''
-        if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.center += self.as_settings.ship_speed_factor
-        if self.moving_left and self.rect.left > 0:
-            self.center -= self.as_settings.ship_speed_factor
-        self.rect.centerx = self.center
-        '''
         #pre-processing
+        if self.invincible_time > 0:
+            self.invincible_time -= 1
         self.velocity.magnitude = round(self.velocity.magnitude, 2)
         self.velocity.bearing = round((self.velocity.bearing % 360), 2)
         self.direction = round((self.direction % 360), 2)
@@ -65,10 +62,6 @@ class Ship():
             self.velocity = self.velocity.resultant_vector(Vector(self.as_settings.friction_factor, self.velocity.bearing - 180))
         else:
             self.velocity.magnitude = 0
-        #if self.velocity.magnitude >= 0.5:
-            #self.velocity.magnitude -= 0.5
-        #elif self.velocity.magnitude > 0 and self.velocity.magnitude < 0.5:
-            #self.velocity.magnitude = 0
 
         #Adjust actual center and rotation without scaling or moving sprite
         orig_rect = self.ori_image.get_rect()
