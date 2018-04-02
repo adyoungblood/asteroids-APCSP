@@ -45,7 +45,7 @@ def check_keydown_events(event, as_settings, screen, ship, bullets):
     if event.key == pygame.K_a:
         ship.turning_left = True
     if event.key == pygame.K_SPACE:
-        #Create a new bullet and add it to the bullets group if there aren't too many bullets
+        #Create a new bullet and add it to the bullets group
         fire_bullet(as_settings, screen, ship, bullets)
     if event.key == pygame.K_q:
         pygame.quit()

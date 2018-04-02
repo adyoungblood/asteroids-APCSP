@@ -16,7 +16,10 @@ class Vector():
             new_vect = vect2
         else:
             new_vect.magnitude = math.sqrt(math.pow(self.magnitude, 2) + math.pow(vect2.magnitude, 2) - (2 * self.magnitude * vect2.magnitude* math.cos(math.radians(180 - (vect2.bearing - self.bearing)))))
-            new_vect.bearing = self.bearing + math.degrees(math.acos(clean_cos((math.pow(new_vect.magnitude, 2) + math.pow(self.magnitude, 2) - math.pow(vect2.magnitude, 2)) / (2 * new_vect.magnitude * self.magnitude))))
+            if new_vect.magnitude == 0:
+                new_vect.bearing = 0
+            else:
+                new_vect.bearing = self.bearing + math.degrees(math.acos(clean_cos((math.pow(new_vect.magnitude, 2) + math.pow(self.magnitude, 2) - math.pow(vect2.magnitude, 2)) / (2 * new_vect.magnitude * self.magnitude))))
         return(new_vect)
 
 def clean_cos(cos_angle):

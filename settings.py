@@ -15,9 +15,10 @@ class Settings():
 
         #Ship settings
         self.ship_limit = 3
-        self.ship_speed_factor = 1
+        self.ship_speed_factor = 0.5
         self.turn_factor = 5
-        self.friction_factor = 0.5
+        self.friction_factor = 0.2
+        self.max_speed = 20
 
         #Bullet settings
         self.bullet_speed_factor = 10
@@ -27,8 +28,7 @@ class Settings():
         self.bullet_dist = 25
         self.bullet_time = 120
 
-        #Alien settings
-        self.alien_speed_factor = 1
-        self.fleet_drop_speed = 10
-        #fleet_direction of 1 represents right, -1 represents left
+        #Asteroid settings
+        self.asteroid_speed_factor = 1
+        self.num_splits = 3
         self.fleet_direction = 1

@@ -60,13 +60,17 @@ class Ship():
         self.center = [round(self.center[0] + vel_components[0], 2), round(self.center[1] + vel_components[1], 2)]
 
         #post-processing
-        self.velocity.magnitude = min(25, self.velocity.magnitude)
-        if self.velocity.magnitude >= 0.5:
-            self.velocity.magnitude -= 0.5
-        elif self.velocity.magnitude > 0 and self.velocity.magnitude < 0.5:
+        self.velocity.magnitude = min(self.as_settings.max_speed, self.velocity.magnitude)
+        if self.velocity.magnitude > 0:
+            self.velocity = self.velocity.resultant_vector(Vector(self.as_settings.friction_factor, self.velocity.bearing - 180))
+        else:
             self.velocity.magnitude = 0
+        #if self.velocity.magnitude >= 0.5:
+            #self.velocity.magnitude -= 0.5
+        #elif self.velocity.magnitude > 0 and self.velocity.magnitude < 0.5:
+            #self.velocity.magnitude = 0
 
-        #Adjust actual center and rotation without scaling or moving
+        #Adjust actual center and rotation without scaling or moving sprite
         orig_rect = self.ori_image.get_rect()
         rot_image = pygame.transform.rotate(self.ori_image, -self.direction - 90)
         rot_rect = orig_rect.copy()
