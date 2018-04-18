@@ -14,6 +14,8 @@ class Bullet(Sprite):
         self.rect = pygame.Rect(0, 0, as_settings.bullet_width, as_settings.bullet_height)
         self.rect.centerx = ship.rect.centerx + (as_settings.bullet_dist * math.cos(math.radians(self.direction)))
         self.rect.centery = ship.rect.centery + (as_settings.bullet_dist * math.sin(math.radians(self.direction)))
+        self.mask = pygame.mask.Mask((as_settings.bullet_width, as_settings.bullet_height))
+        self.mask.fill()
 
         #stores the bullet's position as decimal values
         self.x = float(self.rect.centerx)
@@ -22,7 +24,7 @@ class Bullet(Sprite):
         self.time_remaining = as_settings.bullet_time
 
         self.color = as_settings.bullet_color
-        self.speed_factor = as_settings.bullet_speed_factor
+        self.speed_factor = as_settings.bullet_speed_factor + ship.velocity.magnitude
 
     def update(self):
         """Move the bullet forwards"""

@@ -16,7 +16,7 @@ class Ship():
         self.image = self.ori_image
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
-        #self.mask = pygame.mask.from_surface(self.image)
+        self.mask = pygame.mask.from_surface(self.image)
 
         # Start each new ship at the center of the screen
         self.rect.center = self.screen_rect.center
@@ -41,8 +41,8 @@ class Ship():
         if self.invincible_time > 0:
             self.invincible_time -= 1
         self.velocity.magnitude = round(self.velocity.magnitude, 2)
-        self.velocity.bearing = round((self.velocity.bearing % 360), 2)
-        self.direction = round((self.direction % 360), 2)
+        self.velocity.bearing = round(bound(self.velocity.bearing, 0, 360), 2)
+        self.direction = round(bound(self.direction, 0, 360), 2)
         
         #React to key events
         if self.turning_right:
@@ -65,17 +65,37 @@ class Ship():
 
         #Adjust actual center and rotation without scaling or moving sprite
         orig_rect = self.ori_image.get_rect()
-        rot_image = pygame.transform.rotate(self.ori_image, -self.direction - 90)
+        rot_image = pygame.transform.rotate(self.ori_image, -(self.direction + 90))
         rot_rect = orig_rect.copy()
         rot_rect.center = rot_image.get_rect().center
         rot_image = rot_image.subsurface(rot_rect).copy()
         self.image = rot_image
+        
         self.rect.center = self.center
-	
+
+        self.mask = pygame.mask.from_surface(self.image)
+
     def blitme(self):
         """Draw the ship at its current location"""
-        self.screen.blit(self.image, self.rect)
-
+        if ((self.invincible_time / self.as_settings.flash_time) - self.invincible_time % self.as_settings.flash_time) % 2 == 0 and self.invincible_time != 0:
+            blank_surface = pygame.Surface((100, 100))
+            blank_surface.fill(self.as_settings.bg_color)
+            self.screen.blit(blank_surface, self.rect)
+        else:
+            self.screen.blit(self.image, self.rect)
+        
     def center_ship(self):
         """Center the ship on the screen"""
         self.center = self.screen_rect.center
+
+    def explode(self):
+        """Change the sprite to an explosion"""
+        self.direction = 0
+        self.velocity = Vector(0, 0)
+        self.screen.blit(pygame.image.load('images/shipexplosion.png'), (self.center[0] - 100, self.center[1] - 100))
+        pygame.display.flip()
+
+
+def bound(value, low, high):
+    diff = high - low
+    return (((value - low) % diff) + low)
